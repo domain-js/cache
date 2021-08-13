@@ -1,6 +1,6 @@
 {
   "name": "@domain.js/cache",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "domain.js cache plugin",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,11 @@
     "type": "git",
     "url": "git+ssh://git@github.com/domain-js/cache.git"
   },
-  "keywords": ["cache", "redis", "domain.js"],
+  "keywords": [
+    "cache",
+    "redis",
+    "domain.js"
+  ],
   "author": "Redstone Zhao",
   "license": "MIT",
   "bugs": {
@@ -19,7 +23,7 @@
   },
   "homepage": "https://github.com/domain-js/cache#readme",
   "dependencies": {
-    "open-cached": "^0.1.0"
+    "lru-cache": "^6.0.0"
   },
   "devDependencies": {
     "jest": "^24.9.0"
