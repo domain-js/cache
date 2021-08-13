@@ -19,13 +19,13 @@
 
 # Usage
 * [参考 lru-cache option](https://github.com/isaacs/node-lru-cache)
-* `caching` 自动将某个函数处理成具有cache特性的函数，保持原函数行为不变
+* `caching` 自动将某个异步函数(如果是同步函数，加工完后会变成异步)处理成具有cache特性的函数，保持原函数行为不变
 
 ```javascript
 const fn = (...args) => { // do something };
 const keyFn = (...args) => `cache-${args[0]}-${args[1]}`;
 const isAsync = true;
-const fn1 = cache.caching(fn, lifeMS, keyFn, isAsync);
+const fn1 = cache.caching(fn, lifeMS, keyFn);
 
 const res = await fn1(1, 2);
 const res2 = await fn1(1, 2); // 第二次执行的时候返回的是第一次的cache
