@@ -1,7 +1,10 @@
 const LRU = require("lru-cache");
+const Before = require("./Before");
+const After = require("./After");
 
 function Main(cnf, deps) {
   const { _ } = deps;
+
   const lru = new LRU(cnf.cache);
 
   lru.caching = (fn, life, getKey) => {
@@ -24,6 +27,8 @@ function Main(cnf, deps) {
   return lru;
 }
 
-Main.Deps = ["_"];
+Main.Before = Before;
+Main.After = After;
+Main.Deps = ["_", "logger"];
 
 module.exports = Main;

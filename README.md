@@ -9,6 +9,11 @@
 
 # cnf
 专属配置名称 `cache`
+| 名称 | 类型 | 必填 | 默认值 | 描述 | 样例 |
+| ---- | ---- | ---- | ------ | ---- | ---- |
+| isMulti | boolean | `否` | `false` | 是否为多节点分布式部署 | true |
+| delSignalChannel | string | `否` | `LRU_DEL_SIGNAL_CHANNEL` | 多节点广播cache删除信息的渠道名称，借助于 redis(pub/sub) | __CHANNEL__ |
+
 * [参考 lru-cache option](https://github.com/isaacs/node-lru-cache)
 
 # deps
