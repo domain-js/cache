@@ -34,7 +34,7 @@ function Main(cnf, deps) {
     };
   };
 
-  lru.hitRate = () => ({ hits, misseds });
+  lru.hitCount = () => ({ hits, misseds });
 
   graceful.exit(() => {
     logger.info("System exiting cache stats", { hits, misseds });

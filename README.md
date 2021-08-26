@@ -30,9 +30,11 @@
 const fn = (...args) => { // do something };
 const keyFn = (...args) => `cache-${args[0]}-${args[1]}`;
 const isAsync = true;
-const fn1 = cache.caching(fn, lifeMS, keyFn);
+const hitFn = (isHit) => { // do hit count, isHit must be `true` or `false` }
+const fn1 = cache.caching(fn, lifeMS, keyFn, hitFn);
 
 const res = await fn1(1, 2);
 const res2 = await fn1(1, 2); // 第二次执行的时候返回的是第一次的cache
+console.log("cache hit stats: %o", cache.hitCount());
 ```
 

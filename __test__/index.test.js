@@ -53,7 +53,7 @@ describe("cache", () => {
       expect(fn.mock.calls.length).toBe(1);
       expect(fn.mock.calls.pop()).toEqual([2, 3]);
 
-      expect(cache.hitRate()).toEqual({ hits: 1, misseds: 4 });
+      expect(cache.hitCount()).toEqual({ hits: 1, misseds: 4 });
     });
 
     it("case2", async () => {
@@ -85,7 +85,7 @@ describe("cache", () => {
       expect(hit.mock.calls.length).toBe(1);
       expect(hit.mock.calls.pop()).toEqual([true]);
 
-      expect(cache.hitRate()).toEqual({ hits: 2, misseds: 4 });
+      expect(cache.hitCount()).toEqual({ hits: 2, misseds: 4 });
 
       expect(await fn1(20, 30)).toBe(50);
       expect(fn.mock.calls.length).toBe(1);
@@ -93,7 +93,7 @@ describe("cache", () => {
 
       expect(hit.mock.calls.length).toBe(1);
       expect(hit.mock.calls.pop()).toEqual([false]);
-      expect(cache.hitRate()).toEqual({ hits: 2, misseds: 5 });
+      expect(cache.hitCount()).toEqual({ hits: 2, misseds: 5 });
     });
 
     it("case4 graceful.exit", async () => {
