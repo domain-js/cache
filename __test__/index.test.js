@@ -12,7 +12,15 @@ describe("cache", () => {
       max: 2,
     },
   };
-  const deps = { _ };
+  const logger = {
+    info: jest.fn(),
+    error: jest.fn(),
+  };
+  const graceful = {
+    exit: jest.fn(),
+  };
+
+  const deps = { _, logger, graceful };
   describe("caching", () => {
     const fn = jest.fn(async (a, b) => {
       await sleep(300);
@@ -44,6 +52,8 @@ describe("cache", () => {
       expect(await fn1(2, 3)).toBe(5);
       expect(fn.mock.calls.length).toBe(1);
       expect(fn.mock.calls.pop()).toEqual([2, 3]);
+
+      expect(cache.hitRate()).toEqual({ hits: 1, misseds: 4 });
     });
 
     it("case2", async () => {
@@ -60,6 +70,41 @@ describe("cache", () => {
       );
 
       expect(() => cache.caching(fn, 10, "test")).toThrow("must be a function");
+
+      expect(() => cache.caching(fn, 1000, (a, b) => `fn-${a}-${b}`, "hello")).toThrow(
+        "must be a function",
+      );
+    });
+
+    it("case3, defined hitFn", async () => {
+      const hit = jest.fn();
+      const fn1 = cache.caching(fn, 10 * 1000, (a, b) => `fn-${a}-${b}`, hit);
+      expect(await fn1(2, 3)).toBe(5);
+      expect(fn.mock.calls.length).toBe(0);
+
+      expect(hit.mock.calls.length).toBe(1);
+      expect(hit.mock.calls.pop()).toEqual([true]);
+
+      expect(cache.hitRate()).toEqual({ hits: 2, misseds: 4 });
+
+      expect(await fn1(20, 30)).toBe(50);
+      expect(fn.mock.calls.length).toBe(1);
+      expect(fn.mock.calls.pop()).toEqual([20, 30]);
+
+      expect(hit.mock.calls.length).toBe(1);
+      expect(hit.mock.calls.pop()).toEqual([false]);
+      expect(cache.hitRate()).toEqual({ hits: 2, misseds: 5 });
+    });
+
+    it("case4 graceful.exit", async () => {
+      expect(graceful.exit.mock.calls.length).toBe(1);
+      const [exit] = graceful.exit.mock.calls.pop();
+      await exit();
+      expect(logger.info.mock.calls.length).toBe(1);
+      expect(logger.info.mock.calls.pop()).toEqual([
+        "System exiting cache stats",
+        { hits: 2, misseds: 5 },
+      ]);
     });
   });
 });
