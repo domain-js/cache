@@ -1,6 +1,7 @@
-const Redis = require("ioredis");
+import * as Redis from "ioredis";
+import { Cnf, Deps } from "./Define";
 
-module.exports = (cnf, deps) => {
+module.exports = (cnf: Cnf, deps: Deps) => {
   const { cache = {}, redis } = cnf;
   const { isMulti = false } = cache;
 

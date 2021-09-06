@@ -1,4 +1,14 @@
-module.exports = (lru, cnf, deps, pubsub) => {
+import * as LRU from "lru-cache";
+import { Cnf, Deps } from "./Define";
+
+const Redis = require("ioredis");
+
+module.exports = (
+  lru: LRU<string, string>,
+  cnf: Cnf,
+  deps: Deps,
+  pubsub: { pub: typeof Redis; sub: typeof Redis },
+) => {
   const { cache = {} } = cnf;
   const { isMulti = false, delSignalChannel = "LRU_DEL_SIGNAL_CHANNEL" } = cache;
   // 如果不是多节点分部署部署，则不需要处理
