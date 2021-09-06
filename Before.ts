@@ -1,11 +1,13 @@
 import * as Redis from "ioredis";
 import { Cnf, Deps } from "./Define";
 
-module.exports = (cnf: Cnf, deps: Deps) => {
+type returns = [Cnf, Deps, { pub: Redis.Redis; sub: Redis.Redis } | null];
+
+export const Before = (cnf: Cnf, deps: Deps): returns => {
   const { cache = {}, redis } = cnf;
   const { isMulti = false } = cache;
 
-  if (!isMulti) return [cnf, deps];
+  if (!isMulti) return [cnf, deps, null];
 
   // 如果不是多节点分部署部署，则不需要处理
   // 开启多节点分布式部署后，要通过redis广播cache的del事件，依次来保持cache的有效性

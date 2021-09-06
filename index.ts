@@ -1,9 +1,8 @@
 import { isFunction } from "util";
 import * as LRU from "lru-cache";
 import { Cnf } from "./Define";
-
-export * from "./Before";
-export * from "./After";
+export { Before } from "./Before";
+export { After } from "./After";
 
 export function Main(cnf: Cnf) {
   let hits = 0; // 击中次数
@@ -11,14 +10,19 @@ export function Main(cnf: Cnf) {
 
   const lru = new LRU<string, string>(cnf.cache);
 
-  const caching = (fn, life, getKey, hit) => {
+  const caching = (
+    fn: Function,
+    life: number,
+    getKey: (...args: any[]) => string,
+    hit: (hited: boolean) => void,
+  ) => {
     if (!isFunction(fn)) throw Error("The first argument must be a function");
     if (!Number.isInteger(life) || life < 1)
       throw Error("The second argument must be a number and great then 0");
     if (!isFunction(getKey)) throw Error("The third argument must be a function");
     if (hit && !isFunction(hit)) throw Error("The fourth argument must be a function");
 
-    return async (...args) => {
+    return async (...args: any): Promise<any> => {
       const key = getKey(...args);
       if (lru.has(key)) {
         hits += 1;
@@ -40,4 +44,4 @@ export function Main(cnf: Cnf) {
   return Object.assign(lru, { caching, hitCount });
 }
 
-export const Deps = [];
+export const Deps = ["logger"];

@@ -3,22 +3,22 @@ import { Cnf, Deps } from "./Define";
 
 const Redis = require("ioredis");
 
-module.exports = (
+export const After = (
   lru: LRU<string, string>,
   cnf: Cnf,
   deps: Deps,
-  pubsub: { pub: typeof Redis; sub: typeof Redis },
+  pubsub: { pub: typeof Redis; sub: typeof Redis } | null,
 ) => {
   const { cache = {} } = cnf;
   const { isMulti = false, delSignalChannel = "LRU_DEL_SIGNAL_CHANNEL" } = cache;
   // 如果不是多节点分部署部署，则不需要处理
   // 开启多节点分布式部署后，要通过redis广播cache的del事件，依次来保持cache的有效性
-  if (!isMulti) return;
+  if (!isMulti || !pubsub) return;
 
   const { logger } = deps;
   const { pub, sub } = pubsub;
 
-  sub.subscribe(delSignalChannel, (err, count) => {
+  sub.subscribe(delSignalChannel, (err: Error | null, count: number) => {
     logger.info("cache.redis.subscribe", { chanels: delSignalChannel, count });
     if (err) return logger.error(err);
     return logger.info(`cache.redis.subscribe succeed, channel count: ${count}`);
@@ -29,7 +29,7 @@ module.exports = (
     pub.publish(delSignalChannel, key);
   };
 
-  sub.on("message", async (channel, key) => {
+  sub.on("message", async (channel: string, key: string) => {
     if (channel === delSignalChannel) del(key);
   });
 };

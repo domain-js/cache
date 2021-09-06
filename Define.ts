@@ -5,7 +5,7 @@ export interface Cnf {
     isMulti?: boolean;
     delSignalChannel?: string;
   } & LRU.Options<string, string>;
-  redis: unknown;
+  redis: any;
 }
 
 export interface Deps {
