@@ -1,6 +1,7 @@
 import * as LRU from "lru-cache";
+import * as Redis from "ioredis";
 
-export interface Cnf {
+export interface CnfDef {
   cache?: {
     isMulti?: boolean;
     delSignalChannel?: string;
@@ -8,9 +9,14 @@ export interface Cnf {
   redis: any;
 }
 
-export interface Deps {
+export interface DepsDef {
   logger: {
     info(message: string, extra?: any): void;
     error(error: Error, extra?: any): void;
   };
+}
+
+export interface PubSubDef {
+  pub: Redis.Redis;
+  sub: Redis.Redis;
 }

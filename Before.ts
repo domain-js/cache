@@ -1,9 +1,9 @@
 import * as Redis from "ioredis";
-import { Cnf, Deps } from "./Define";
+import { CnfDef, DepsDef, PubSubDef } from "./Define";
 
-type returns = [Cnf, Deps, { pub: Redis.Redis; sub: Redis.Redis } | null];
+type returns = [CnfDef, DepsDef, PubSubDef | null];
 
-export const Before = (cnf: Cnf, deps: Deps): returns => {
+export const Before = (cnf: CnfDef, deps: DepsDef): returns => {
   const { cache = {}, redis } = cnf;
   const { isMulti = false } = cache;
 

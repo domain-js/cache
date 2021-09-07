@@ -1,13 +1,13 @@
 import * as LRU from "lru-cache";
-import { Cnf, Deps } from "./Define";
+import { CnfDef, DepsDef, PubSubDef } from "./Define";
 
 const Redis = require("ioredis");
 
 export const After = (
   lru: LRU<string, string>,
-  cnf: Cnf,
-  deps: Deps,
-  pubsub: { pub: typeof Redis; sub: typeof Redis } | null,
+  cnf: CnfDef,
+  deps: DepsDef,
+  pubsub: PubSubDef | null,
 ) => {
   const { cache = {} } = cnf;
   const { isMulti = false, delSignalChannel = "LRU_DEL_SIGNAL_CHANNEL" } = cache;
