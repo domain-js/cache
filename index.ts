@@ -12,7 +12,7 @@ export function Main(cnf: CnfDef, deps: DepsDef, pubsub: PubSubDef | null) {
 
   const lru = new LRU<string, string>(cnf.cache);
 
-  function caching<T extends (...args: any[]) => any>(
+  function caching<T extends (...args: any[]) => Promise<any>>(
     func: T,
     life: number,
     getKey: (...args: Parameters<T>) => string,
@@ -24,7 +24,7 @@ export function Main(cnf: CnfDef, deps: DepsDef, pubsub: PubSubDef | null) {
     if (!isFunction(getKey)) throw Error("The third argument must be a function");
     if (hit && !isFunction(hit)) throw Error("The fourth argument must be a function");
 
-    const wrapped = (...args: Parameters<T>) => {
+    const wrapped = async (...args: Parameters<T>) => {
       const key = getKey(...args);
       if (lru.has(key)) {
         hits += 1;
@@ -33,7 +33,7 @@ export function Main(cnf: CnfDef, deps: DepsDef, pubsub: PubSubDef | null) {
       }
       if (hit) hit(false);
       misseds += 1;
-      const res = func(...args);
+      const res = await func(...args);
 
       lru.set(key, res, life);
 
