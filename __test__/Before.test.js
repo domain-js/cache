@@ -1,4 +1,4 @@
-const Before = require("../Before");
+const { Before } = require("../dist/Before");
 
 describe("cache", () => {
   const sub = {
@@ -17,7 +17,7 @@ describe("cache", () => {
     const cnf = {};
     it("case1", () => {
       const lru = { del: jest.fn() };
-      expect(Before(cnf, deps)).toEqual([cnf, deps]);
+      expect(Before(cnf, deps)).toEqual([cnf, deps, null]);
     });
   });
 

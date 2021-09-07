@@ -1,4 +1,4 @@
-const After = require("../After");
+const { After } = require("../dist/After");
 
 describe("cache", () => {
   const sub = {

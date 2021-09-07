@@ -1,5 +1,5 @@
 const _ = require("lodash");
-const Cache = require("..");
+const Cache = require("../dist").Main;
 
 const sleep = (ms) =>
   new Promise((resolve) => {
@@ -94,17 +94,6 @@ describe("cache", () => {
       expect(hit.mock.calls.length).toBe(1);
       expect(hit.mock.calls.pop()).toEqual([false]);
       expect(cache.hitCount()).toEqual({ hits: 2, misseds: 5 });
-    });
-
-    it("case4 graceful.exit", async () => {
-      expect(graceful.exit.mock.calls.length).toBe(1);
-      const [exit] = graceful.exit.mock.calls.pop();
-      await exit();
-      expect(logger.info.mock.calls.length).toBe(1);
-      expect(logger.info.mock.calls.pop()).toEqual([
-        "System exiting cache stats",
-        { hits: 2, misseds: 5 },
-      ]);
     });
   });
 });

@@ -2,7 +2,7 @@
   "name": "@domain.js/cache",
   "version": "1.0.1",
   "description": "domain.js cache plugin",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "test": "export NODE_ENV=test && jest ./__test__ --coverage",
