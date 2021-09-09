@@ -1,7 +1,6 @@
-const _ = require("lodash");
-const Cache = require("../dist").Main;
+import { Main } from "../src";
 
-const sleep = (ms) =>
+const sleep = (ms: number) =>
   new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
@@ -16,19 +15,16 @@ describe("cache", () => {
     info: jest.fn(),
     error: jest.fn(),
   };
-  const graceful = {
-    exit: jest.fn(),
-  };
 
-  const deps = { _, logger, graceful };
+  const deps = { logger };
   describe("caching", () => {
-    const fn = jest.fn(async (a, b) => {
+    const fn = jest.fn(async (a: number, b: number) => {
       await sleep(300);
       return a + b;
     });
-    const cache = Cache(cnf, deps);
+    const cache = Main(cnf, deps);
     it("case1", async () => {
-      const fn1 = cache.caching(fn, 10 * 1000, (a, b) => `fn-${a}-${b}`);
+      const fn1 = cache.caching(fn, 10 * 1000, (a: number, b: number): string => `fn-${a}-${b}`);
       // 第一次执行，没有cache，函数会真实的执行
       expect(await fn1(2, 3)).toBe(5);
       expect(fn.mock.calls.length).toBe(1);
@@ -56,29 +52,9 @@ describe("cache", () => {
       expect(cache.hitCount()).toEqual({ hits: 1, misseds: 4 });
     });
 
-    it("case2", async () => {
-      expect(() => cache.caching("hello", 10 * 1000, (a, b) => `fn-${a}-${b}`)).toThrow(
-        "must be a function",
-      );
-
-      expect(() => cache.caching(fn, "hello", (a, b) => `fn-${a}-${b}`)).toThrow(
-        "must be a number and great then 0",
-      );
-
-      expect(() => cache.caching(fn, 0, (a, b) => `fn-${a}-${b}`)).toThrow(
-        "must be a number and great then 0",
-      );
-
-      expect(() => cache.caching(fn, 10, "test")).toThrow("must be a function");
-
-      expect(() => cache.caching(fn, 1000, (a, b) => `fn-${a}-${b}`, "hello")).toThrow(
-        "must be a function",
-      );
-    });
-
     it("case3, defined hitFn", async () => {
       const hit = jest.fn();
-      const fn1 = cache.caching(fn, 10 * 1000, (a, b) => `fn-${a}-${b}`, hit);
+      const fn1 = cache.caching(fn, 10 * 1000, (a: number, b: number) => `fn-${a}-${b}`, hit);
       expect(await fn1(2, 3)).toBe(5);
       expect(fn.mock.calls.length).toBe(0);
 

@@ -1,4 +1,4 @@
-const { After } = require("../dist/After");
+import { After } from "../src/After";
 
 describe("cache", () => {
   const sub = {
@@ -17,7 +17,7 @@ describe("cache", () => {
     const cnf = {};
     it("case1", () => {
       const lru = { del: jest.fn() };
-      After(lru, cnf, deps, { pub, sub });
+      After(lru, cnf, deps);
 
       expect(pub.publish.mock.calls.length).toBe(0);
       expect(sub.subscribe.mock.calls.length).toBe(0);

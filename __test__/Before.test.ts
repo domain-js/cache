@@ -1,4 +1,4 @@
-const { Before } = require("../dist/Before");
+import { Before } from "../src/Before";
 
 describe("cache", () => {
   const sub = {

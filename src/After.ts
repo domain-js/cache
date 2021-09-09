@@ -1,18 +1,17 @@
 import * as LRU from "lru-cache";
-import { CnfDef, DepsDef, PubSubDef } from "./Define";
-
-const Redis = require("ioredis");
+import { SetRequired } from "type-fest";
+import { CnfDef, DepsDef, PubSubDef, Cache } from "./Define";
 
 export const After = (
-  lru: LRU<string, string>,
+  lru: SetRequired<Partial<Cache>, "del">,
   cnf: CnfDef,
   deps: DepsDef,
-  pubsub: PubSubDef | null,
+  pubsub?: PubSubDef,
 ) => {
   const { cache = {} } = cnf;
   const { isMulti = false, delSignalChannel = "LRU_DEL_SIGNAL_CHANNEL" } = cache;
   // 如果不是多节点分部署部署，则不需要处理
-  // 开启多节点分布式部署后，要通过redis广播cache的del事件，依次来保持cache的有效性
+  // 开启多节点分布式部署后，要通过redis广播cache的del事件，以此来保持cache的有效性
   if (!isMulti || !pubsub) return;
 
   const { logger } = deps;
