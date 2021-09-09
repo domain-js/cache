@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "test": "export NODE_ENV=test && jest ./__test__ --coverage",
-    "test:watch": "export NODE_ENV=test && jest ./__test__ --watch"
+    "test:watch": "export NODE_ENV=test && jest ./__test__ --watch",
+    "release": "npm run build && npm publish --registry=https://registry.npmjs.org --access=public"
   },
   "repository": {
     "type": "git",
@@ -27,13 +28,11 @@
   "typings": "./dist/index.d.ts",
   "dependencies": {
     "ioredis": "^4.27.7",
-    "lodash": "^4.17.21",
     "lru-cache": "^6.0.0"
   },
   "devDependencies": {
     "@types/ioredis": "^4.27.1",
     "@types/jest": "^27.0.1",
-    "@types/lodash": "^4.14.172",
     "@types/lru-cache": "^5.1.1",
     "codecov": "^3.8.3",
     "jest": "^27.1.0",
