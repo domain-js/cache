@@ -1,7 +1,7 @@
 # @domain.js/cache
 基于 lru-cache 库包封装的适合 @domain.js/domain 的cache模块
 
-[![Build status](https://travis-ci.com/domain-js/cache.svg?branch=master)](https://travis-ci.org/domain-js/cache)
+[![Build status](https://travis-ci.com/domain-js/cache.svg?branch=master)](https://travis-ci.com/domain-js/cache)
 [![codecov](https://codecov.io/gh/domain-js/cache/branch/master/graph/badge.svg)](https://codecov.io/gh/domain-js/cache)
 
 # Installation

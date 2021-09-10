@@ -1,6 +1,6 @@
 {
   "name": "@domain.js/cache",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "domain.js cache plugin",
   "main": "dist/index.js",
   "scripts": {
