@@ -7,7 +7,7 @@
     "build": "tsc",
     "test": "export NODE_ENV=test && jest ./__test__ --coverage",
     "test:watch": "export NODE_ENV=test && jest ./__test__ --watch",
-    "release": "npm run build && npm publish --registry=https://registry.npmjs.org --access=public"
+    "release": "npm run test && npm run build && npm publish --registry=https://registry.npmjs.org --access=public"
   },
   "repository": {
     "type": "git",
