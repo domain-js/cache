@@ -14,12 +14,16 @@
 | isMulti | boolean | `否` | `false` | 是否为多节点分布式部署 | true |
 | delSignalChannel | string | `否` | `LRU_DEL_SIGNAL_CHANNEL` | 多节点广播cache删除信息的渠道名称，借助于 redis(pub/sub) | __CHANNEL__ |
 
+额外配置名称 `redis`, 参考 @domain.js/redis 
+
+
 * [参考 lru-cache option](https://github.com/isaacs/node-lru-cache)
 
 # deps
 | 模块名 | 别名 | 用到的方法 | 描述 |
 | ------ | ---- | ---------- | ---- |
-| _ | `无` | `不确定` | lodash |
+| logger | `无` | `info` | 输出日志 |
+| logger | `无` | `error` | 输出错误 |
 
 
 # Usage
